@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>bucket.png</file>
+        <file>incoming.png</file>
+        <file>minus.png</file>
+        <file>outgoing.png</file>
+        <file>play.png</file>
+        <file>plus.png</file>
+        <file>questionmark.png</file>
+        <file>zerg.png</file>
+        <file>2D_MST.png</file>
+    </qresource>
+</RCC>
