@@ -24,6 +24,7 @@ private:
 public:
     double get_x() const;
     double get_y() const;
+    void reverse_y();
     std::vector < graph_edge > & get_edge();
     graph_node(double _x = 0.0, double _y = 0.0);
     std::vector < graph_edge >::iterator insert(graph_edge x);
@@ -81,6 +82,11 @@ inline double graph_node::get_x() const
 inline double graph_node::get_y() const
 {
     return y;
+}
+
+inline void graph_node::reverse_y()
+{
+	y=-y;
 }
 
 inline std::vector < graph_edge > & graph_node::get_edge()

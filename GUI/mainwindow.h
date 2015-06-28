@@ -31,6 +31,7 @@ private slots:
 
 public slots:
     void openfile();
+    void savefile();
     void calculate();
 
 private:			// methods

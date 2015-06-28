@@ -1,0 +1,174 @@
+#include <cmath>
+#include <iostream>
+
+#include "lodepng.h"
+std::vector<unsigned char> image;
+void point(int x, int y, int w, int h, int color=1){
+	size_t byte_index = (y * w + x) / 2;
+	bool byte_half = (y * w + x) % 2 == 1;
+	image[byte_index] |= (unsigned char)(color << (byte_half ? 0 : 4));
+}
+void circle(int a, int b, int w, int h, int r, int color=1){
+	for(int y = a-r; y <= a+r; y++)
+		for(int x = b-sqrt(r*r-(y-a)*(y-a)); x <= b+sqrt(r*r-(y-a)*(y-a)); x++)
+		{
+			point(x, y, w, h, color);
+		}	
+}
+void line(int x1,int y1,int x2,int y2,int w,int h,int color=1)
+{
+    int dx,dy,e;
+    dx=x2-x1; 
+    dy=y2-y1;
+     
+    if(dx>=0)
+    {
+        if(dy >= 0) // dy>=0
+        {
+            if(dx>=dy) // 1/8 octant
+            {
+                e=dy-dx/2;
+                while(x1<=x2)
+                {
+                    point(x1,y1,w,h,color);
+                    if(e>0){y1+=1;e-=dx;}    
+                    x1+=1;
+                    e+=dy;
+                }
+            }
+            else        // 2/8 octant
+            {
+                e=dx-dy/2;
+                while(y1<=y2)
+                {
+                    point(x1,y1,w,h,color);
+                    if(e>0){x1+=1;e-=dy;}    
+                    y1+=1;
+                    e+=dx;
+                }
+            }
+        }
+        else           // dy<0
+        {
+            dy=-dy;   // dy=abs(dy)
+ 
+            if(dx>=dy) // 8/8 octant
+            {
+                e=dy-dx/2;
+                while(x1<=x2)
+                {
+                    point(x1,y1,w,h,color);
+                    if(e>0){y1-=1;e-=dx;}    
+                    x1+=1;
+                    e+=dy;
+                }
+            }
+            else        // 7/8 octant
+            {
+                e=dx-dy/2;
+                while(y1>=y2)
+                {
+                    point(x1,y1,w,h,color);
+                    if(e>0){x1+=1;e-=dy;}    
+                    y1-=1;
+                    e+=dx;
+                }
+            }
+        }   
+    }
+    else //dx<0
+    {
+        dx=-dx;     //dx=abs(dx)
+        if(dy >= 0) // dy>=0
+        {
+            if(dx>=dy) // 4/8 octant
+            {
+                e=dy-dx/2;
+                while(x1>=x2)
+                {
+                    PutPixel(x1,y1,color);
+                    if(e>0){y1+=1;e-=dx;}    
+                    x1-=1;
+                    e+=dy;
+                }
+            }
+            else        // 3/8 octant
+            {
+                e=dx-dy/2;
+                while(y1<=y2)
+                {
+                    PutPixel(x1,y1,color);
+                    if(e>0){x1-=1;e-=dy;}    
+                    y1+=1;
+                    e+=dx;
+                }
+            }
+        }
+        else           // dy<0
+        {
+            dy=-dy;   // dy=abs(dy)
+ 
+            if(dx>=dy) // 5/8 octant
+            {
+                e=dy-dx/2;
+                while(x1>=x2)
+                {
+                    PutPixel(x1,y1,color);
+                    if(e>0){y1-=1;e-=dx;}    
+                    x1-=1;
+                    e+=dy;
+                }
+            }
+            else        // 6/8 octant
+            {
+                e=dx-dy/2;
+                while(y1>=y2)
+                {
+                    PutPixel(x1,y1,color);
+                    if(e>0){x1-=1;e-=dy;}    
+                    y1-=1;
+                    e+=dx;
+                }
+            }
+        }   
+    }
+}
+
+int main(int argc, char *argv[])
+{
+	//check if user gave a filename
+	if(argc < 2)
+	{
+		std::cout << "please provide a filename to save to" << std::endl;
+		return 0;
+	}
+
+	//create encoder and set settings and info (optional)
+	lodepng::State state;
+
+	//generate palette
+	lodepng_palette_add(&state.info_png.color, 0, 0, 0, 1);
+	lodepng_palette_add(&state.info_raw, 0, 0, 0, 1);
+
+	//both the raw image and the encoded image must get colorType 3 (palette)
+	state.info_png.color.colortype = LCT_PALETTE; //if you comment this line, and create the above palette in info_raw instead, then you get the same image in a RGBA PNG.
+	state.info_png.color.bitdepth = 4;
+	state.info_raw.colortype = LCT_PALETTE;
+	state.info_raw.bitdepth = 4;
+	state.encoder.auto_convert = 1; //we specify ourselves exactly what output PNG color mode we want
+
+	//generate some image
+	const unsigned w = 512;
+	const unsigned h = 512;
+	image.resize((w * h * 4 + 7) / 8, 0);
+	circle(50, 50, w, h, 50);
+	//encode and save
+	std::vector<unsigned char> buffer;
+	unsigned error = lodepng::encode(buffer, image.empty() ? 0 : &image[0], w, h, state);
+	if(error)
+	{
+		std::cout << "encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
+		return 0;
+	}
+	lodepng::save_file(buffer, argv[1]);
+}

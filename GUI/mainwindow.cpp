@@ -15,6 +15,7 @@
 #include <QProgressDialog>
 #include <QLCDNumber>
 #include <QHBoxLayout>
+#include <QVariant>
 #include <cmath>
 #include <cstring>
 #include <algorithm>
@@ -53,11 +54,16 @@ MainWindow::MainWindow(QWidget * parent): QMainWindow(parent)
     newNodeAction->setStatusTip(tr("Open the file"));
     mainToolBar->addAction(newNodeAction);
     connect(newNodeAction, SIGNAL(triggered()), this, SLOT(openfile()));
-    QAction *calcAction = new QAction(QIcon(":/icons/play.png"), tr("&Calculate"), this);
+    QAction *calcAction = new QAction(QIcon(":/icons/plus.png"), tr("&Calculate"), this);
     calcAction->setStatusTip(tr("Calculate"));
     calcAction->setShortcuts(QKeySequence::Copy);
     mainToolBar->addAction(calcAction);
     connect(calcAction, SIGNAL(triggered()), this, SLOT(calculate()));
+    QAction *saveAction = new QAction(QIcon(":/icons/play.png"), tr("&Save"), this);
+    saveAction->setStatusTip(tr("Save"));
+    saveAction->setShortcuts(QKeySequence::Save);
+    mainToolBar->addAction(saveAction);
+    connect(saveAction, SIGNAL(triggered()), this, SLOT(savefile()));
     QAction *closeAction = new QAction(QIcon(":/icons/outgoing.png"), tr("E&xit"), this);
     closeAction->setStatusTip(tr("Exit"));
     closeAction->setShortcuts(QKeySequence::Close);
@@ -150,6 +156,12 @@ void MainWindow::calculate()
     printsta(m_mainCtrl, kruskal->get_node(), kruskal->get_ansedge());
 }
 
+void MainWindow::savefile()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Files"), "", tr("PNG Files(*.png);;All Files(*.*)"));
+    kruskal->print(fileName);
+}
+
 void MainWindow::clearsta()
 {
     for (vector < NodeCtrl * >::const_iterator i = nodectrl.begin();
@@ -185,7 +197,7 @@ void MainWindow::printsta(MainCtrl * mainCtrl, vector<graph_node>& node, vector<
     nodectrl.assign(node.size(), NULL);
     for (vector < graph_node >::const_iterator i = node.begin(); i != node.end(); i++) {
         progress_dialog.setValue(i - node.begin());
-        QVariant name(i-node.begin()+1), x(i->get_x()), y(i->get_y());
+        QVariant name(int(i-node.begin()+1)), x(int(i->get_x())), y(int(i->get_y()));
         nodectrl[i-node.begin()]=mainCtrl->createNode(name.toString()+" at ("+x.toString()+", "+y.toString()+")");
         nodectrl[i-node.begin()]->getNodeHandle().setPos(i->get_x()*70, -i->get_y()*70);
         qApp->processEvents();

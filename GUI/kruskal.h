@@ -16,6 +16,7 @@ public:
     void calc();
     double get_ans() const;
     std::vector<graph_edge> & get_ansedge();
+    void print(QString _filename);
     virtual ~Kruskal();
 };
 inline Kruskal::Kruskal(int _size_node, int _size_edge)

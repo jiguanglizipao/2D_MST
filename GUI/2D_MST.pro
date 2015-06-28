@@ -39,7 +39,9 @@ SOURCES += \
     nodeproperties.cpp \
     propertyeditor.cpp \
     ranklist.cpp \
-    unionfind.cpp
+    unionfind.cpp \
+    png.cpp \
+    lodepng.cpp
 
 HEADERS  += \
     relarankgraph/baseedge.h \
@@ -76,7 +78,9 @@ HEADERS  += \
     nodeproperties.h \
     propertyeditor.h \
     ranklist.h \
-    unionfind.h
+    unionfind.h \
+    png.h \
+    lodepng.h
 
 RESOURCES += \
     res/icons.qrc

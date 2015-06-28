@@ -15,7 +15,7 @@ void RankList::changelist(vector<graph_edge> &_edge, vector<NodeCtrl*> &_np)
         QVariant from(tmp[i].x.get_x()+1), to(tmp[i].x.get_y()+1), value(tmp[i].x.get_w());
         t<<from.toString()<<to.toString()<<value.toString();
         QTreeWidgetItem *ln = new QTreeWidgetItem(this, t);
-        ln->setData(0x0100, 0x0100, i);
+        ln->setData(0x0100, 0x0100, int(i));
         this->addTopLevelItem(ln);
     }
     this->header()->resizeSections(QHeaderView::ResizeToContents);
