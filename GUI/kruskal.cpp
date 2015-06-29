@@ -48,6 +48,6 @@ void Kruskal::print(QString _filename)
 	       			int((node[ansedge[i].get_y()].get_x()-mi_x)*dis), int((node[ansedge[i].get_y()].get_y()-mi_y)*dis), 
         			line_r);
     }
-    map.save(_filename.toStdString().c_str());
+    map.save(_filename);
 	for(size_t i=0;i<node.size();i++)node[i].reverse_y();
 }

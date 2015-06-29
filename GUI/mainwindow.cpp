@@ -58,10 +58,15 @@ MainWindow::MainWindow(QWidget * parent): QMainWindow(parent)
     calcAction->setStatusTip(tr("Calculate"));
     calcAction->setShortcuts(QKeySequence::Copy);
     mainToolBar->addAction(calcAction);
+    calcAction->setDisabled(true);
     connect(calcAction, SIGNAL(triggered()), this, SLOT(calculate()));
-    QAction *saveAction = new QAction(QIcon(":/icons/play.png"), tr("&Save"), this);
+    connect(this, SIGNAL(loaded(bool)), calcAction, SLOT(setEnabled(bool)));
+    saveAction = new QAction(QIcon(":/icons/play.png"), tr("&Save"), this);
     saveAction->setStatusTip(tr("Save"));
     saveAction->setShortcuts(QKeySequence::Save);
+    saveAction->setDisabled(true);
+    connect(this, SIGNAL(loaded(bool)), saveAction, SLOT(setDisabled(bool)));
+    connect(this, SIGNAL(calced(bool)), saveAction, SLOT(setEnabled(bool)));
     mainToolBar->addAction(saveAction);
     connect(saveAction, SIGNAL(triggered()), this, SLOT(savefile()));
     QAction *closeAction = new QAction(QIcon(":/icons/outgoing.png"), tr("E&xit"), this);
@@ -130,6 +135,7 @@ void MainWindow::openfile()
         return;
     }
     file.close();
+    emit loaded(true);
     if(kruskal != NULL) delete kruskal;
     kruskal = new Kruskal(fileName);
     kruskal->calc();
@@ -154,6 +160,7 @@ void MainWindow::calculate()
     ans->resize(600, 100);
     ans->show();
     printsta(m_mainCtrl, kruskal->get_node(), kruskal->get_ansedge());
+    emit calced(true);
 }
 
 void MainWindow::savefile()

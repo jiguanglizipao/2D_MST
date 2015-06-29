@@ -399,6 +399,8 @@ unsigned lodepng_save_file(const unsigned char* buffer, size_t buffersize, const
   return 0;
 }
 
+
+
 #endif /*LODEPNG_COMPILE_DISK*/
 
 /* ////////////////////////////////////////////////////////////////////////// */
@@ -5942,6 +5944,14 @@ void save_file(const std::vector<unsigned char>& buffer, const std::string& file
 {
   std::ofstream file(filename.c_str(), std::ios::out|std::ios::binary);
   file.write(buffer.empty() ? 0 : (char*)&buffer[0], std::streamsize(buffer.size()));
+  file.close();
+}
+void save_file(const std::vector<unsigned char>& buffer, const QString& filename)
+{
+  QFile file(filename);
+  if(!file.open(QIODevice::WriteOnly)) return;
+  file.write(buffer.empty() ? 0 : (char*)&buffer[0], std::streamsize(buffer.size()));
+  file.close();
 }
 #endif /* LODEPNG_COMPILE_DISK */
 

@@ -28,7 +28,9 @@ protected:			// methods
 
 private slots:
     void displayAbout();
-
+signals:
+    void loaded(bool);
+    void calced(bool);
 public slots:
     void openfile();
     void savefile();
@@ -48,6 +50,7 @@ private:			// methods
     relarank::View * relarankView;
     PropertyEditor *propertyEditor;
     RankList * ranklist;
+    QAction *saveAction, *calcAction;
 
 private:			// members
 

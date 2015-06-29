@@ -55,9 +55,9 @@ void png::line(int x1, int y1, int x2, int y2, int r, int color)
 		}
 	}
 }
-void png::save(const char *filename)
+void png::save(QString filename)
 {
 	std::vector<unsigned char> buffer;
 	lodepng::encode(buffer, image.empty() ? 0 : &image[0], w, h, state);
-	lodepng::save_file(buffer, filename);
+    lodepng::save_file(buffer, filename);
 }

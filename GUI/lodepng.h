@@ -26,12 +26,10 @@ freely, subject to the following restrictions:
 #ifndef LODEPNG_H
 #define LODEPNG_H
 
-#include <string.h> /*for size_t*/
-
-#ifdef __cplusplus
+#include <cstring> /*for size_t*/
 #include <vector>
 #include <string>
-#endif /*__cplusplus*/
+#include <QFile>
 
 extern const char* LODEPNG_VERSION_STRING;
 
@@ -856,6 +854,7 @@ Save the binary data in an std::vector to a file on disk. The file is overwritte
 without warning.
 */
 void save_file(const std::vector<unsigned char>& buffer, const std::string& filename);
+void save_file(const std::vector<unsigned char>& buffer, const QString& filename);
 #endif /* LODEPNG_COMPILE_DISK */
 #endif /* LODEPNG_COMPILE_PNG */
 
