@@ -28,6 +28,7 @@ void Kruskal::calc()
 
 void Kruskal::print(QString _filename)
 {
+    if(node.size()>=1000)return;
 	for(size_t i=0;i<node.size();i++)node[i].reverse_y();
 	const int circle_r = 10, line_r = 5, dis = 20;
 	if(node.empty())return;

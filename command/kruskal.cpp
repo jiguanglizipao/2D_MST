@@ -16,7 +16,7 @@ void Kruskal::calc()
     ans = 0;ansedge.clear();
     sort(edge.begin(), edge.end());
     uni.reset(node.size());
-    for(size_t i=0;i<edge.size();i++)\
+	for(size_t i=0;i<edge.size();i++)
     {
         if(!uni.uni(edge[i].get_x(), edge[i].get_y())){
             ans+=edge[i].get_w();
@@ -28,6 +28,7 @@ void Kruskal::calc()
 
 void Kruskal::print(string _filename)
 {
+	if(node.size()>=1000)return;
 	for(size_t i=0;i<node.size();i++)node[i].reverse_y();
 	const int circle_r = 10, line_r = 5, dis = 20;
 	if(node.empty())return;

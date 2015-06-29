@@ -53,6 +53,7 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 !command/Makefile*
+!checker/Makefile*
 *-build-*
 
 # QtCreator
