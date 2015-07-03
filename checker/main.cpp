@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     string filename(argv[1]);
     Kruskal kruskal(filename);
     kruskal.calc();
-    std::cout<<"Answer is "<<kruskal.get_ans()<<endl;
+    printf("Answer is %.2lf\n",kruskal.get_ans());
     if(argc > 2)kruskal.print(string(argv[2]));
     return 0;
 }

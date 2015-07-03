@@ -28,7 +28,7 @@ void Kruskal::calc()
 
 void Kruskal::print(QString _filename)
 {
-    if(node.size()>=1000)return;
+	//if(node.size()>=1000)return;
 	for(size_t i=0;i<node.size();i++)node[i].reverse_y();
 	const int circle_r = 10, line_r = 5, dis = 20;
 	if(node.empty())return;
@@ -44,11 +44,11 @@ void Kruskal::print(QString _filename)
 	for(size_t i=0;i<node.size();i++){
 		map.circle(int((node[i].get_x()-mi_x)*dis), int((node[i].get_y()-mi_y)*dis), circle_r);
 	}
-    for(size_t i=0;i<ansedge.size();i++){
-        map.line(int((node[ansedge[i].get_x()].get_x()-mi_x)*dis), int((node[ansedge[i].get_x()].get_y()-mi_y)*dis), 
+	for(size_t i=0;i<ansedge.size();i++){
+		map.line(int((node[ansedge[i].get_x()].get_x()-mi_x)*dis), int((node[ansedge[i].get_x()].get_y()-mi_y)*dis), 
 	       			int((node[ansedge[i].get_y()].get_x()-mi_x)*dis), int((node[ansedge[i].get_y()].get_y()-mi_y)*dis), 
         			line_r);
-    }
-    map.save(_filename);
+	}
+	map.save(_filename);
 	for(size_t i=0;i<node.size();i++)node[i].reverse_y();
 }
